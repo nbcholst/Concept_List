@@ -1,0 +1,99 @@
+ID,Team,League,Nationality
+1,Leicester City,Premiere League,England
+2,Arsenal,Premiere League,England
+3,Tottenham Hotspur,Premiere League,England
+4,Manchester City,Premiere League,England
+5,Southampton,Premiere League,England
+6,Manchester United,Premiere League,England
+7,West Ham United,Premiere League,England
+8,Liverpool,Premiere League,England
+9,Stoke City,Premiere League,England
+10,Chelsea,Premiere League,England
+11,Everton,Premiere League,England
+12,Swansea City,Premiere League,England
+13,Watford,Premiere League,England
+14,West Bromwich Albion,Premiere League,England
+15,Crystal Palace,Premiere League,England
+16,Bournemouth,Premiere League,England
+17,Sunderland,Premiere League,England
+18,Newcastle United,Premiere League,England
+19,Norwich City,Premiere League,England
+20,Aston Villa,Premiere League,England
+21,Barcelona,La Liga,Spain
+22,Real Madrid,La Liga,Spain
+23,Atletico Madrid,La Liga,Spain
+24,Villarreal,La Liga,Spain
+25,Athletic Bilbao,La Liga,Spain
+26,Celta Vigo,La Liga,Spain
+27,Seville,La Liga,Spain
+28,Malaga,La Liga,Spain
+29,Real Sociedad,La Liga,Spain
+30,Real Betis,La Liga,Spain
+31,Las Palmas,La Liga,Spain
+32,Valencia,La Liga,Spain
+33,Espanyol,La Liga,Spain
+34,Eibar,La Liga,Spain
+35,Deportivo La Coruna,La Liga,Spain
+36,Granada,La Liga,Spain
+37,Sporting Gijon,La Liga,Spain
+38,Rayo Vallecano,La Liga,Spain
+39,Getafe,La Liga,Spain
+40,Levante,La Liga,Spain
+41,Juventus,Serie A,Italy
+42,Napoli,Serie A,Italy
+43,Roma,Serie A,Italy
+44,Inter Milan,Serie A,Italy
+45,Fiorentina,Serie A,Italy
+46,Sassuolo,Serie A,Italy
+47,AC Milan,Serie A,Italy
+48,Lazio,Serie A,Italy
+49,Chievo,Serie A,Italy
+50,Empoli,Serie A,Italy
+51,Genoa,Serie A,Italy
+52,Torino,Serie A,Italy
+53,Atalanta,Serie A,Italy
+54,Bologna,Serie A,Italy
+55,Sampdoria,Serie A,Italy
+56,Palermo,Serie A,Italy
+57,Udinese,Serie A,Italy
+58,Carpi,Serie A,Italy
+59,Frosinone,Serie A,Italy
+60,Verona,Serie A,Italy
+61,Bayern Munich,Bundesliga,Germany
+62,Borussia Dortmund,Bundesliga,Germany
+63,Bayer Leverkusen,Bundesliga,Germany
+64,Borussia Monch'bach,Bundesliga,Germany
+65,Schalke 04,Bundesliga,Germany
+66,Mainz,Bundesliga,Germany
+67,Hertha BSC Berlin,Bundesliga,Germany
+68,VfL Wolfsburg,Bundesliga,Germany
+69,FC Cologne,Bundesliga,Germany
+70,SV Hamburg,Bundesliga,Germany
+71,Ingolstadt,Bundesliga,Germany
+72,Augsburg,Bundesliga,Germany
+73,Werder Bremen,Bundesliga,Germany
+74,Darmstadt 98,Bundesliga,Germany
+75,TSG Hoffenheim,Bundesliga,Germany
+76,Eintracht Frankfurt,Bundesliga,Germany
+77,VfB Stuttgart,Bundesliga,Germany
+78,Hannover 96,Bundesliga,Germany
+79,Paris Saint-Germain,Ligue 1,France
+80,Lyon,Ligue 1,France
+81,Monaco,Ligue 1,France
+82,Nice,Ligue 1,France
+83,Lille,Ligue 1,France
+84,Saint-Etienne,Ligue 1,France
+85,Caen,Ligue 1,France
+86,Rennes,Ligue 1,France
+87,Angers,Ligue 1,France
+88,Bastia,Ligue 1,France
+89,Bordeaux,Ligue 1,France
+90,Montpellier,Ligue 1,France
+91,Marseille,Ligue 1,France
+92,Nantes,Ligue 1,France
+93,Lorient,Ligue 1,France
+94,Guingamp,Ligue 1,France
+95,Toulouse,Ligue 1,France
+96,Reims,Ligue 1,France
+97,Ajaccio,Ligue 1,France
+98,Troyes,Ligue 1,France
