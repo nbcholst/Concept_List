@@ -6,14 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.android.concept_list.database.TeamDbSchema;
 import com.example.android.concept_list.database.TeamDbSchema.TeamTable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,21 +37,15 @@ public class TeamLab {
 
     public void updateDatabase(Context context, SQLiteDatabase database) {
 
-        InputStream inputStream = context.getResources().openRawResource(R.raw.teamlist);
-        BufferedReader buffer = new BufferedReader(null);
-
         try {
-            buffer = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-        } catch (UnsupportedEncodingException ioe) {
-            Log.e("ERROR", "Could not load " + ioe);
-        }
+            InputStream inputStream = context.getResources().openRawResource(R.raw.teamlist);
+            BufferedReader buffer = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 
-        String line = "";
-        String tableName = TeamDbSchema.TeamTable.NAME;
+            String line = "";
+            database.beginTransaction();
 
-        database.beginTransaction();
-        try {
             while ((line = buffer.readLine()) != null) {
+
                 //put row values into str
                 String[] str = line.split(",");
                 String ID = str[0];
@@ -73,9 +65,11 @@ public class TeamLab {
                 //add team to database
                 addTeam(mTeam);
             }
+
         } catch (IOException ioe){
             Log.e("ERROR", "Could not load " + ioe);
         }
+
         database.setTransactionSuccessful();
         database.endTransaction();
     }
