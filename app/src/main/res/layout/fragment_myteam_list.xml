@@ -16,18 +16,27 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:id="@+id/teamsLabel"
-        android:paddingBottom="4dp"
+        android:paddingBottom="8dp"
         android:weightSum="1.0">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".85"
+            android:layout_weight=".75"
             android:textSize="12sp"
-            android:layout_gravity="bottom"
-            android:text="Team Selection"
+            android:layout_gravity="center_vertical"
+            android:text="My Teams"
             android:id="@+id/teamsTextLabel">
         </TextView>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".25"
+            android:textSize="9sp"
+            android:text="Add Team"
+            android:id="@+id/add_to_my_team"
+            />
 
     </LinearLayout>
 
@@ -47,13 +56,13 @@
         android:layout_below="@id/teamsLabel"
         android:layout_gravity="bottom"
         android:text="No Teams Followed"
-        android:id="@+id/no_team_warning">
+        android:id="@+id/my_no_team_warning">
     </TextView>
 
     <android.support.v7.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/team_recycler_view"
+        android:id="@+id/my_team_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/no_team_warning"/>
+        android:layout_below="@id/my_no_team_warning"/>
 </RelativeLayout>
