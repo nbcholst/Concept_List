@@ -29,20 +29,17 @@ public class TeamLab {
         //retrieve Team database. Getwriteabledatabase also creates a new database file if it doesn't exist already
         mContext = context.getApplicationContext();
         mDatabase = new TeamBaseHelper(mContext).getWritableDatabase();
-
-        //fill current database with teams from csv file
-        updateDatabase(context, mDatabase);
-
     }
 
-    public void updateDatabase(Context context, SQLiteDatabase database) {
+    //fill current database with teams from csv file
+    public void updateDatabase(Context context) {
 
         try {
             InputStream inputStream = context.getResources().openRawResource(R.raw.teamlist);
             BufferedReader buffer = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 
             String line = "";
-            database.beginTransaction();
+            mDatabase.beginTransaction();
 
             while ((line = buffer.readLine()) != null) {
 
@@ -70,8 +67,8 @@ public class TeamLab {
             Log.e("ERROR", "Could not load " + ioe);
         }
 
-        database.setTransactionSuccessful();
-        database.endTransaction();
+        mDatabase.setTransactionSuccessful();
+        mDatabase.endTransaction();
     }
 
     public void addTeam(Team c) {
@@ -156,8 +153,12 @@ public class TeamLab {
 
     public static TeamLab get(Context context){
         if (sTeamlab == null){
+            Log.d("No Old Teamlab Found", "True");
             sTeamlab = new TeamLab(context);
         }
+
+        Log.d("Old Teamlab Found", "True");
+
         return sTeamlab;
     }
 }

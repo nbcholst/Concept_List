@@ -43,7 +43,7 @@ public class MyTeamListFragment extends Fragment {
         //add button click listener to bring team select activity
         Button mAddTeamButton = (Button) view.findViewById(R.id.add_to_my_team);
 
-        //add a date picker fragment when clicked
+        //add a team selection button to click
         mAddTeamButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -53,6 +53,7 @@ public class TeamListFragment extends Fragment {
 
     private void updateUI() {
         TeamLab teamLab = TeamLab.get(getActivity());
+        teamLab.updateDatabase(getActivity());
         List<Team> teams = teamLab.getTeams();
 
         if (mAdapter == null) {
