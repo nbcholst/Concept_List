@@ -4,9 +4,16 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
+import com.example.android.concept_list.database.TeamDbSchema;
 import com.example.android.concept_list.database.TeamDbSchema.TeamTable;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +26,58 @@ public class TeamLab {
     private Context mContext;
     private SQLiteDatabase mDatabase;
 
-    private TeamLab(Context context){
+    private TeamLab(Context context) {
 
         //retrieve Team database. Getwriteabledatabase also creates a new database file if it doesn't exist already
         mContext = context.getApplicationContext();
         mDatabase = new TeamBaseHelper(mContext).getWritableDatabase();
 
+        //fill current database with teams from csv file
+        updateDatabase(context, mDatabase);
+
+    }
+
+    public void updateDatabase(Context context, SQLiteDatabase database) {
+
+        InputStream inputStream = context.getResources().openRawResource(R.raw.teamlist);
+        BufferedReader buffer = new BufferedReader(null);
+
+        try {
+            buffer = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+        } catch (UnsupportedEncodingException ioe) {
+            Log.e("ERROR", "Could not load " + ioe);
+        }
+
+        String line = "";
+        String tableName = TeamDbSchema.TeamTable.NAME;
+
+        database.beginTransaction();
+        try {
+            while ((line = buffer.readLine()) != null) {
+                //put row values into str
+                String[] str = line.split(",");
+                String ID = str[0];
+                String NAME = str[1];
+                String LEAGUE = str[2];
+                String COUNTRY = str[3];
+                Boolean SELECTED = false;
+
+                //create team
+                Team mTeam = new Team();
+                mTeam.setId(ID);
+                mTeam.setName(NAME);
+                mTeam.setLeague(LEAGUE);
+                mTeam.setCountry(COUNTRY);
+                mTeam.setSelected(SELECTED);
+
+                //add team to database
+                addTeam(mTeam);
+            }
+        } catch (IOException ioe){
+            Log.e("ERROR", "Could not load " + ioe);
+        }
+        database.setTransactionSuccessful();
+        database.endTransaction();
     }
 
     public void addTeam(Team c) {
@@ -33,9 +86,6 @@ public class TeamLab {
         //first value is name of the table, third value is the value itself
         // second value is nullColumnHack which allows you to insert empty rows
         mDatabase.insert(TeamTable.NAME, null, values);
-    }
-
-    public void removeTeam(Team c) {
     }
 
     public List<Team> getTeams(){
@@ -60,7 +110,7 @@ public class TeamLab {
     public Team getTeam(String id) {
         TeamCursorWrapper cursor = queryTeams(
                 TeamTable.Cols.ID + " = ?",
-                new String[] { id.toString() }
+                new String[] { id }
         );
         try {
             if (cursor.getCount() == 0) {
@@ -87,7 +137,7 @@ public class TeamLab {
     //convert team class to a ContentValue for database storing
     private static ContentValues getContentValues(Team team) {
         ContentValues values = new ContentValues();
-        values.put(TeamTable.Cols.ID, team.getId().toString());
+        values.put(TeamTable.Cols.ID, team.getId());
         values.put(TeamTable.Cols.NAME, team.getName());
         values.put(TeamTable.Cols.LEAGUE, team.getLeague());
         values.put(TeamTable.Cols.COUNTRY, team.getCountry());

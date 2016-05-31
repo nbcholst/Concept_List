@@ -113,8 +113,8 @@ public class TeamListFragment extends Fragment {
     //define the adapter now
     private class TeamAdapter extends RecyclerView.Adapter<TeamHolder>{
         private List<Team> mTeams;
-        public TeamAdapter (List<Team> crimes){
-            mTeams = crimes;
+        public TeamAdapter (List<Team> teams){
+            mTeams = teams;
         }
 
         //call this function when recycler needs a new view to display an item
@@ -129,7 +129,7 @@ public class TeamListFragment extends Fragment {
         }
 
         //recieves the viewholder and a position in your dataset, binds it to model object
-        //retrieves crime using position, adds text from crime into viewholder
+        //retrieves crime using position, adds text from teams into viewholder
         @Override
         public void onBindViewHolder(TeamHolder holder, int position) {
             Team team = mTeams.get(position);
@@ -140,9 +140,9 @@ public class TeamListFragment extends Fragment {
             return mTeams.size();
         }
 
-        //we use this to update crimes
-        public void setTeams(List<Team> crimes) {
-            mTeams = crimes;
+        //we use this to update teans
+        public void setTeams(List<Team> teams) {
+            mTeams = teams;
         }
     }
 
