@@ -12,9 +12,8 @@ import com.example.android.concept_list.database.TeamDbSchema.TeamTable;
  */
 public class TeamBaseHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
-    private static final String DATABASE_NAME = "teamBase.db";
 
-    public TeamBaseHelper(Context context) {
+    public TeamBaseHelper(Context context, String DATABASE_NAME) {
         super(context, DATABASE_NAME, null, VERSION);
     }
 

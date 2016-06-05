@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.android.concept_list.database.TeamDbSchema.TeamTable;
+import com.example.android.concept_list.database.TeamDbSchema;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,16 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by cholni01 on 5/30/2016.
+ * Created by cholni01 on 6/4/2016.
  */
-public class TeamLab {
+public class TeamLab_Me {
 
-    private static TeamLab sTeamlab;
+    private static TeamLab_Me sTeamlab;
     private Context mContext;
     private SQLiteDatabase mDatabase;
-    private static final String DATABASE_NAME = "teamBase.db";
+    private static final String DATABASE_NAME = "myTeamBase.db";
 
-    private TeamLab(Context context) {
+    private TeamLab_Me(Context context) {
 
         //retrieve Team database. Getwriteabledatabase also creates a new database file if it doesn't exist already
         mContext = context.getApplicationContext();
@@ -77,7 +77,7 @@ public class TeamLab {
 
         //first value is name of the table, third value is the value itself
         // second value is nullColumnHack which allows you to insert empty rows
-        mDatabase.insert(TeamTable.NAME, null, values);
+        mDatabase.insert(TeamDbSchema.TeamTable.NAME, null, values);
     }
 
     public List<Team> getTeams(){
@@ -99,31 +99,14 @@ public class TeamLab {
         return teams;
     }
 
-    public Team getTeam (String id) {
-        TeamCursorWrapper cursor = queryTeams(
-                TeamTable.Cols.ID + " = ?",
-                new String[] { id }
-        );
-
-        try {
-            if (cursor.getCount() == 0) {
-                return null;
-            }
-            cursor.moveToFirst();
-            return cursor.getTeam();
-        } finally {
-            cursor.close();
-        }
-    }
-
     //convert team class to a ContentValue for database storing
     private static ContentValues getContentValues(Team team) {
         ContentValues values = new ContentValues();
-        values.put(TeamTable.Cols.ID, team.getId());
-        values.put(TeamTable.Cols.NAME, team.getName());
-        values.put(TeamTable.Cols.LEAGUE, team.getLeague());
-        values.put(TeamTable.Cols.COUNTRY, team.getCountry());
-        values.put(TeamTable.Cols.SELECTED, team.isSelected() ? 1 : 0);
+        values.put(TeamDbSchema.TeamTable.Cols.ID, team.getId());
+        values.put(TeamDbSchema.TeamTable.Cols.NAME, team.getName());
+        values.put(TeamDbSchema.TeamTable.Cols.LEAGUE, team.getLeague());
+        values.put(TeamDbSchema.TeamTable.Cols.COUNTRY, team.getCountry());
+        values.put(TeamDbSchema.TeamTable.Cols.SELECTED, team.isSelected() ? 1 : 0);
         return values;
     }
 
@@ -131,7 +114,7 @@ public class TeamLab {
     // cursors give you raw column values based on inputs
     private TeamCursorWrapper queryTeams(String whereClause, String[] whereArgs) {
         Cursor cursor = mDatabase.query(
-                TeamTable.NAME,
+                TeamDbSchema.TeamTable.NAME,
                 null, // Columns - null selects all columns
                 whereClause,
                 whereArgs,
@@ -142,10 +125,10 @@ public class TeamLab {
         return new TeamCursorWrapper(cursor);
     }
 
-    public static TeamLab get(Context context){
+    public static TeamLab_Me get(Context context){
         if (sTeamlab == null){
             Log.d("No Old Teamlab Found", "True");
-            sTeamlab = new TeamLab(context);
+            sTeamlab = new TeamLab_Me(context);
         }
 
         Log.d("Old Teamlab Found", "True");

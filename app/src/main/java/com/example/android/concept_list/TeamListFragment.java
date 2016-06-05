@@ -1,5 +1,6 @@
 package com.example.android.concept_list;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -104,10 +106,22 @@ public class TeamListFragment extends Fragment {
             //get item position that was clicked on
             itemPosition = mTeamRecyclerView.getChildAdapterPosition(v);
 
-            //start new intent, pass on ID and item position
-            //old version Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId(), itemPosition);
+            //get team ID
+            String teamID = mTeam.getId();
 
-            //TODO: Add intent later
+            //get team object
+            Team mTeamSelected = TeamLab.get(getActivity()).getTeam(teamID);
+
+            //retrieve myTeamLab and add selected team
+            TeamLab_Me myTeamLab = TeamLab_Me.get(getActivity());
+            myTeamLab.addTeam(mTeamSelected);
+
+            //add notification toast
+            Context context = itemView.getContext();
+            CharSequence text = "Added Team to List";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
         }
     }
 

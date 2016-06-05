@@ -66,7 +66,7 @@ public class MyTeamListFragment extends Fragment {
 
 
     private void updateUI() {
-        TeamLab teamLab = TeamLab.get(getActivity());
+        TeamLab_Me teamLab = TeamLab_Me.get(getActivity());
         List<Team> teams = teamLab.getTeams();
 
         if (mAdapter == null) {
