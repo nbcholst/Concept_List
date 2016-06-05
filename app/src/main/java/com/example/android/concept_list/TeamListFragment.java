@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +50,7 @@ public class TeamListFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        updateUI();
+        //updateUI();
     }
 
 
@@ -62,7 +63,6 @@ public class TeamListFragment extends Fragment {
             mAdapter = new TeamAdapter(teams);
             mTeamRecyclerView.setAdapter(mAdapter);
         } else {
-
             mAdapter.setTeams(teams);
             mAdapter.notifyItemChanged(itemPosition);
         }
@@ -80,6 +80,7 @@ public class TeamListFragment extends Fragment {
 
         private TextView mTitleTextView;
         private TextView mDescTextView;
+        private boolean mSelected;
 
         private Team mTeam;
 
@@ -99,31 +100,80 @@ public class TeamListFragment extends Fragment {
             mTeam = team;
             mTitleTextView.setText(mTeam.getName());
             mDescTextView.setText(mTeam.getLeague());
+            mSelected = mTeam.isSelected();
+            updateTeamFormat(mSelected);
+
+            //log the issue
+            Log.d("Selection Change", mTeam.getName() + " is " + Boolean.toString(mSelected));
         }
 
         @Override
         public void onClick(View v){
+
             //get item position that was clicked on
             itemPosition = mTeamRecyclerView.getChildAdapterPosition(v);
 
             //get team ID
             String teamID = mTeam.getId();
 
-            //get team object
+            //change boolean value and update item
+            mSelected = !mSelected;
+            mTeam.setSelected(mSelected);
+            TeamLab teamLab = TeamLab.get(getActivity());
+            teamLab.updateTeam(mTeam);
+
+            //test if change actually happened
+            boolean testBool = teamLab.getTeam(teamID).isSelected();
+            Log.d("Selection Change", mTeam.getName() + " changed to " + Boolean.toString(testBool));
+
+            //get team object and teamlab_me
             Team mTeamSelected = TeamLab.get(getActivity()).getTeam(teamID);
-
-            //retrieve myTeamLab and add selected team
             TeamLab_Me myTeamLab = TeamLab_Me.get(getActivity());
-            myTeamLab.addTeam(mTeamSelected);
 
-            //add notification toast
-            Context context = itemView.getContext();
-            CharSequence text = "Added Team to List";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
+            //update format
+            updateTeamFormat(mSelected);
+
+            //if boolean mSelected is true, then add team to list, otherwise remove it
+            if (mSelected) {
+                myTeamLab.addTeam(mTeamSelected);
+
+                //add notification toast
+                Context context = itemView.getContext();
+                CharSequence text = "Added team to list";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            } else {
+                myTeamLab.deleteTeam(mTeamSelected);
+
+                //add notification toast
+                Context context = itemView.getContext();
+                CharSequence text = "Removed team from list";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
         }
+
+        public void updateTeamFormat(boolean isSelected){
+
+            if (isSelected){
+                //change color formatting of item
+                itemView.setBackgroundColor(getResources().getColor(R.color.dark_blue));
+                mTitleTextView.setTextColor(getResources().getColor(R.color.white));
+                mDescTextView.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                //change colors back to normal
+                //change color formatting of item
+                itemView.setBackgroundColor(getResources().getColor(R.color.blue));
+                mTitleTextView.setTextColor(getResources().getColor(R.color.dark_grey));
+                mDescTextView.setTextColor(getResources().getColor(R.color.dark_grey));
+            }
+        }
+
     }
+
+
 
     //define the adapter now
     private class TeamAdapter extends RecyclerView.Adapter<TeamHolder>{

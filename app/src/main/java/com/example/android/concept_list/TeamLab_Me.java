@@ -80,6 +80,15 @@ public class TeamLab_Me {
         mDatabase.insert(TeamDbSchema.TeamTable.NAME, null, values);
     }
 
+    public void deleteTeam(Team c) {
+        //get ID of team
+        String teamID = c.getId();
+
+        //search database and remove item with that ID
+        mDatabase.delete(TeamDbSchema.TeamTable.NAME, TeamDbSchema.TeamTable.Cols.ID + " = ?", new String[] {teamID});
+
+    }
+
     public List<Team> getTeams(){
 
         //initialize Teams array, retrieve all Team cursors by using null parameters

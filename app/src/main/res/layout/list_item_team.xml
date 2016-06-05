@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/teamCell"
-    android:padding="4dp"
+    android:padding="8dp"
+    android:layout_margin="4dp"
+    android:background="@color/blue"
     android:gravity="center_vertical"
     android:weightSum="1.0">
 
@@ -20,7 +22,7 @@
             android:gravity="center_vertical"
             android:textSize="18sp"
             android:text="Golden State Warriors"
-            android:textColor="#d6ac00"
+            android:textColor="#636363"
             android:id="@+id/teamTitle">
         </TextView>
         <TextView

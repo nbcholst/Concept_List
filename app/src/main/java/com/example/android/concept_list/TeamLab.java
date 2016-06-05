@@ -24,6 +24,7 @@ public class TeamLab {
     private Context mContext;
     private SQLiteDatabase mDatabase;
     private static final String DATABASE_NAME = "teamBase.db";
+    private boolean updatedAlready = false;
 
     private TeamLab(Context context) {
 
@@ -35,41 +36,48 @@ public class TeamLab {
     //fill current database with teams from csv file
     public void updateDatabase(Context context) {
 
-        try {
-            InputStream inputStream = context.getResources().openRawResource(R.raw.teamlist);
-            BufferedReader buffer = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+        Log.d("Database Update", "Database has been updated? " + Boolean.toString(updatedAlready));
+        if (!updatedAlready) {
+            Log.d("Database Update", "Pulling in csv data to database");
 
-            String line = "";
-            mDatabase.beginTransaction();
+            try {
+                InputStream inputStream = context.getResources().openRawResource(R.raw.teamlist);
+                BufferedReader buffer = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 
-            while ((line = buffer.readLine()) != null) {
+                String line = "";
+                mDatabase.beginTransaction();
 
-                //put row values into str
-                String[] str = line.split(",");
-                String ID = str[0];
-                String NAME = str[1];
-                String LEAGUE = str[2];
-                String COUNTRY = str[3];
-                Boolean SELECTED = false;
+                while ((line = buffer.readLine()) != null) {
 
-                //create team
-                Team mTeam = new Team();
-                mTeam.setId(ID);
-                mTeam.setName(NAME);
-                mTeam.setLeague(LEAGUE);
-                mTeam.setCountry(COUNTRY);
-                mTeam.setSelected(SELECTED);
+                    //put row values into str
+                    String[] str = line.split(",");
+                    String ID = str[0];
+                    String NAME = str[1];
+                    String LEAGUE = str[2];
+                    String COUNTRY = str[3];
+                    Boolean SELECTED = false;
 
-                //add team to database
-                addTeam(mTeam);
+                    //create team
+                    Team mTeam = new Team();
+                    mTeam.setId(ID);
+                    mTeam.setName(NAME);
+                    mTeam.setLeague(LEAGUE);
+                    mTeam.setCountry(COUNTRY);
+                    mTeam.setSelected(SELECTED);
+
+                    //add team to database
+                    addTeam(mTeam);
+                }
+
+            } catch (IOException ioe) {
+                Log.e("ERROR", "Could not load " + ioe);
             }
+            mDatabase.setTransactionSuccessful();
+            mDatabase.endTransaction();
 
-        } catch (IOException ioe){
-            Log.e("ERROR", "Could not load " + ioe);
+            updatedAlready = true;
         }
 
-        mDatabase.setTransactionSuccessful();
-        mDatabase.endTransaction();
     }
 
     public void addTeam(Team c) {
@@ -116,6 +124,18 @@ public class TeamLab {
         }
     }
 
+    //update team item
+    public void updateTeam(Team team) {
+        String id = team.getId().toString();
+        ContentValues values = getContentValues(team);
+
+        //update database and specify which rows get updated
+        //we use ? text identifier to make sure input uuidString is treated as a string and not a SQL injection attack
+        mDatabase.update(TeamTable.NAME, values,
+                TeamTable.Cols.ID + " = ?",
+                new String[]{id});
+    }
+
     //convert team class to a ContentValue for database storing
     private static ContentValues getContentValues(Team team) {
         ContentValues values = new ContentValues();
@@ -152,4 +172,5 @@ public class TeamLab {
 
         return sTeamlab;
     }
+
 }
