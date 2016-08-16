@@ -5,12 +5,18 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -22,6 +28,7 @@ public class MyTeamListFragment extends Fragment {
     private TeamAdapter mAdapter;
     private TextView mWarningTextView;
     private int itemPosition;
+    private EditText myTeamSearch;
 
     //create options menu
     @Override
@@ -55,6 +62,29 @@ public class MyTeamListFragment extends Fragment {
         //update
         updateUI();
 
+        //add filter function to recyclerview
+        myTeamSearch = (EditText) view.findViewById(R.id.myTeamSearch);
+        myTeamSearch.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                // When user changed the Text
+               mAdapter.filter(cs.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+
         return view;
     }
 
@@ -73,9 +103,7 @@ public class MyTeamListFragment extends Fragment {
             mAdapter = new TeamAdapter(teams);
             mTeamRecyclerView.setAdapter(mAdapter);
         } else {
-
             mAdapter.setTeams(teams);
-            mAdapter.notifyItemChanged(itemPosition);
         }
 
         //Retrieve number of Teams, set warning textview visibility off if there are Teams
@@ -114,21 +142,19 @@ public class MyTeamListFragment extends Fragment {
 
         @Override
         public void onClick(View v){
-            //get item position that was clicked on
-            itemPosition = mTeamRecyclerView.getChildAdapterPosition(v);
-
-            //start new intent, pass on ID and item position
-            //old version Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId(), itemPosition);
-
-            //TODO: Add intent later
+            //TODO: Add click functionality later
         }
     }
 
     //define the adapter now
     private class TeamAdapter extends RecyclerView.Adapter<TeamHolder>{
         private List<Team> mTeams;
+        private List<Team> mTeamsCopy;
+        private List<Team> mTeamsFilterHolder = new ArrayList<>();
+
         public TeamAdapter (List<Team> teams){
             mTeams = teams;
+            mTeamsCopy = teams;
         }
 
         //call this function when recycler needs a new view to display an item
@@ -143,7 +169,7 @@ public class MyTeamListFragment extends Fragment {
         }
 
         //recieves the viewholder and a position in your dataset, binds it to model object
-        //retrieves crime using position, adds text from teams into viewholder
+        //retrieves team using position, adds text from teams into viewholder
         @Override
         public void onBindViewHolder(TeamHolder holder, int position) {
             Team team = mTeams.get(position);
@@ -154,9 +180,39 @@ public class MyTeamListFragment extends Fragment {
             return mTeams.size();
         }
 
-        //we use this to update teans
+        //we use this to update teams
         public void setTeams(List<Team> teams) {
             mTeams = teams;
+            //mTeamsCopy = teams;
+        }
+
+        //use this to implement filter function
+        //first make a copy of the list to display
+
+
+        public void filter(String text) {
+            Log.d("Search text: ", text);
+
+            if(text.isEmpty()){
+                mTeams.clear();
+                mTeams.addAll(mTeamsCopy);
+            } else{
+                Log.d("Search text: ", "Edited");
+                Log.d("Search array length: ", Integer.toString(mTeamsCopy.size()));
+                text = text.toLowerCase();
+                mTeamsFilterHolder.clear();
+                int i =0;
+                for(Team item: mTeamsCopy){
+                    i++;
+                    if(item.getName().toLowerCase().contains(text)){
+                        mTeamsFilterHolder.add(item);
+                        Log.d("Added item: ", item.getName());
+                    }
+                }
+                mTeams.clear();
+                mTeams.addAll(mTeamsFilterHolder);
+            }
+            mAdapter.notifyDataSetChanged();
         }
     }
 

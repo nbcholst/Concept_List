@@ -139,9 +139,6 @@ public class TeamLab_Me {
             Log.d("No Old Teamlab Found", "True");
             sTeamlab = new TeamLab_Me(context);
         }
-
-        Log.d("Old Teamlab Found", "True");
-
         return sTeamlab;
     }
 }

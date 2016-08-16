@@ -19,21 +19,20 @@
         android:paddingBottom="8dp"
         android:weightSum="1.0">
 
-        <TextView
+        <EditText android:id="@+id/myTeamSearch"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight=".75"
-            android:textSize="12sp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="My Teams"
-            android:id="@+id/teamsTextLabel">
-        </TextView>
+            android:hint="My Teams (Click to Search)"
+            android:textSize="14sp"
+            android:inputType="textVisiblePassword"/>
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".25"
-            android:textSize="9sp"
+            android:textSize="12sp"
             android:text="Add Team"
             android:id="@+id/add_to_my_team"
             />
